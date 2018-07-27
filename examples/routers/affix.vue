@@ -1,8 +1,9 @@
 <style>
-    body{
+    body {
         /*height: 2000px;*/
     }
-    .demo-affix{
+
+    .demo-affix {
         width: 100px;
         height: 30px;
         background: #f60;
@@ -10,22 +11,22 @@
     }
 </style>
 <template>
-<div>
-    <Affix>
-        <div class="demo-affix">固定在最顶部</div>
-    </Affix>
-    <div v-for="(item,index) in arr">{{item}}</div>
-</div>
+    <div>
+        <Affix>
+            <div class="demo-affix">固定在最顶部</div>
+        </Affix>
+        <div v-for="(item,index) in arr">{{item}}</div>
+    </div>
 </template>
 <script>
     export default {
-        data(){
+        data() {
             return {
                 arr: []
             }
         },
-        created(){
-            for(let i = 0 ; i < 100 ; i++){
+        created() {
+            for (let i = 0; i < 100; i++) {
                 this.arr.push(i);
             }
         }
