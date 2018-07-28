@@ -4,7 +4,8 @@
             <div
                 :class="[prefixCls + '-shortcut']"
                 v-for="shortcut in shortcuts"
-                @click="handleShortcutClick(shortcut)">{{ shortcut.text }}</div>
+                @click="handleShortcutClick(shortcut)">{{ shortcut.text }}
+            </div>
         </div>
         <div :class="[prefixCls + '-body']">
             <div :class="[datePrefixCls + '-header']" v-show="currentView !== 'time'">
@@ -72,6 +73,7 @@
                 @on-pick-success="handlePickSuccess"
             ></Confirm>
         </div>
+
     </div>
 </template>
 <script>
@@ -87,15 +89,15 @@
     import DateMixin from './date-panel-mixin';
     import Locale from '../../../../mixins/locale';
 
-    import { siblingMonth, formatDateLabels } from '../../util';
+    import {siblingMonth, formatDateLabels} from '../../util';
 
     const prefixCls = 'ivu-picker-panel';
     const datePrefixCls = 'ivu-date-picker';
 
     export default {
         name: 'DatePickerPanel',
-        mixins: [ Mixin, Locale, DateMixin ],
-        components: { Icon, DateTable, YearTable, MonthTable, TimePicker, Confirm, datePanelLabel },
+        mixins: [Mixin, Locale, DateMixin],
+        components: {Icon, DateTable, YearTable, MonthTable, TimePicker, Confirm, datePanelLabel},
         props: {
             // more props in the mixin
             multiple: {
@@ -132,7 +134,7 @@
                 const locale = this.t('i.locale');
                 const datePanelLabel = this.t('i.datepicker.datePanelLabel');
                 const date = this.panelDate;
-                const { labels, separator } = formatDateLabels(locale, datePanelLabel, date);
+                const {labels, separator} = formatDateLabels(locale, datePanelLabel, date);
 
                 const handler = type => {
                     return () => this.pickerTable = this.getTableType(type);
@@ -169,7 +171,7 @@
             focusedDate(date){
                 const isDifferentYear = date.getFullYear() !== this.panelDate.getFullYear();
                 const isDifferentMonth = isDifferentYear || date.getMonth() !== this.panelDate.getMonth();
-                if (isDifferentYear || isDifferentMonth){
+                if (isDifferentYear || isDifferentMonth) {
                     this.panelDate = date;
                 }
             }
@@ -180,7 +182,7 @@
                 this.pickerTable = this.getTableType(this.currentView);
             },
             changeYear(dir){
-                if (this.selectionMode === 'year' || this.pickerTable === 'year-table'){
+                if (this.selectionMode === 'year' || this.pickerTable === 'year-table') {
                     this.panelDate = new Date(this.panelDate.getFullYear() + dir * 10, 0, 1);
                 } else {
                     this.panelDate = siblingMonth(this.panelDate, dir * 12);

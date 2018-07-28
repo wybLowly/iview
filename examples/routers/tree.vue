@@ -202,7 +202,8 @@
 <template>
     <div>
         {{ data1 }}
-        <Tree :data="data1"></Tree>
+        <Tree :data="data1" showCheckbox multiple></Tree>
+        <Tree :data="data1"  multiple></Tree>
     </div>
 </template>
 <script>

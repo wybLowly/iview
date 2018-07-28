@@ -1,5 +1,5 @@
 <template>
-    <div :class="[prefixCls + '-confirm']" @keydown.tab.capture="handleTab">
+    <div :class="[prefixCls + '-confirm']" @keydown.tab.capture="handleTab" slot="confirm">
         <i-button :class="timeClasses" size="small" type="text" :disabled="timeDisabled" v-if="showTime" @click="handleToggleTime">
             {{labels.time}}
         </i-button>

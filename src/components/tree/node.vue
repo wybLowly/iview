@@ -7,22 +7,22 @@
                     <Icon v-if="showLoading" type="ios-loading" class="ivu-load-loop"></Icon>
                 </span>
                 <Checkbox
-                        v-if="showCheckbox"
-                        :value="data.checked"
-                        :indeterminate="data.indeterminate"
-                        :disabled="data.disabled || data.disableCheckbox"
-                        @click.native.prevent="handleCheck"></Checkbox>
+                    v-if="showCheckbox"
+                    :value="data.checked"
+                    :indeterminate="data.indeterminate"
+                    :disabled="data.disabled || data.disableCheckbox"
+                    @click.native.prevent="handleCheck"></Checkbox>
                 <Render v-if="data.render" :render="data.render" :data="data" :node="node"></Render>
                 <Render v-else-if="isParentRender" :render="parentRender" :data="data" :node="node"></Render>
                 <span v-else :class="titleClasses" @click="handleSelect">{{ data.title }}</span>
                 <Tree-node
-                        v-if="data.expand"
-                        v-for="(item, i) in children"
-                        :key="i"
-                        :data="item"
-                        :multiple="multiple"
-                        :show-checkbox="showCheckbox"
-                        :children-key="childrenKey">
+                    v-if="data.expand"
+                    v-for="(item, i) in children"
+                    :key="i"
+                    :data="item"
+                    :multiple="multiple"
+                    :show-checkbox="showCheckbox"
+                    :children-key="childrenKey">
                 </Tree-node>
             </li>
         </ul>
@@ -34,14 +34,14 @@
     import Render from './render';
     import CollapseTransition from '../base/collapse-transition';
     import Emitter from '../../mixins/emitter';
-    import { findComponentUpward } from '../../utils/assist';
+    import {findComponentUpward} from '../../utils/assist';
 
     const prefixCls = 'ivu-tree';
 
     export default {
         name: 'TreeNode',
-        mixins: [ Emitter ],
-        components: { Checkbox, Icon, CollapseTransition, Render },
+        mixins: [Emitter],
+        components: {Checkbox, Icon, CollapseTransition, Render},
         props: {
             data: {
                 type: Object,
@@ -156,6 +156,10 @@
             },
             handleSelect () {
                 if (this.data.disabled) return;
+                if (this.showCheckbox) {
+                    this.handleCheck();
+                    return;
+                }
                 this.dispatch('Tree', 'on-selected', this.data.nodeKey);
             },
             handleCheck () {

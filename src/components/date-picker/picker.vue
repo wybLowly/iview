@@ -68,6 +68,9 @@
                         @on-pick-click="disableClickOutSide = true"
                         @on-selection-mode-change="onSelectionModeChange"
                     ></component>
+                    <slot name="footer" >
+
+                    </slot>
                 </div>
             </Drop>
         </transition>
@@ -80,8 +83,8 @@
     import Drop from '../../components/select/dropdown.vue';
     import {directive as clickOutside} from 'v-click-outside-x';
     import TransferDom from '../../directives/transfer-dom';
-    import { oneOf } from '../../utils/assist';
-    import { DEFAULT_FORMATS, RANGE_SEPARATOR, TYPE_VALUE_RESOLVER_MAP, getDayCountOfMonth } from './util';
+    import {oneOf} from '../../utils/assist';
+    import {DEFAULT_FORMATS, RANGE_SEPARATOR, TYPE_VALUE_RESOLVER_MAP, getDayCountOfMonth} from './util';
     import {findComponentsDownward} from '../../utils/assist';
     import Emitter from '../../mixins/emitter';
 
@@ -118,9 +121,9 @@
 
 
     export default {
-        mixins: [ Emitter ],
-        components: { iInput, Drop },
-        directives: { clickOutside, TransferDom },
+        mixins: [Emitter],
+        components: {iInput, Drop},
+        directives: {clickOutside, TransferDom},
         props: {
             format: {
                 type: String
@@ -243,7 +246,7 @@
                 }];
             },
             publicVModelValue(){
-                if (this.multiple){
+                if (this.multiple) {
                     return this.internalValue.slice();
                 } else {
                     const isRange = this.type.includes('range');
@@ -321,7 +324,7 @@
                 this.visible = true;
             },
             handleBlur (e) {
-                if (this.internalFocus){
+                if (this.internalFocus) {
                     this.internalFocus = false;
                     return;
                 }
@@ -341,12 +344,12 @@
                 const keyCode = e.keyCode;
 
                 // handle "tab" key
-                if (keyCode === 9){
-                    if (this.visible){
+                if (keyCode === 9) {
+                    if (this.visible) {
                         e.stopPropagation();
                         e.preventDefault();
 
-                        if (this.isConfirm){
+                        if (this.isConfirm) {
                             const selector = `.${pickerPrefixCls}-confirm > *`;
                             const tabbable = this.$refs.drop.$el.querySelectorAll(selector);
                             this.internalFocus = true;
@@ -362,13 +365,13 @@
 
                 // open the panel
                 const arrows = [37, 38, 39, 40];
-                if (!this.visible && arrows.includes(keyCode)){
+                if (!this.visible && arrows.includes(keyCode)) {
                     this.visible = true;
                     return;
                 }
 
                 // close on "esc" key
-                if (keyCode === 27){
+                if (keyCode === 27) {
                     if (this.visible) {
                         e.stopPropagation();
                         this.handleClose();
@@ -376,9 +379,9 @@
                 }
 
                 // select date, "Enter" key
-                if (keyCode === 13){
+                if (keyCode === 13) {
                     const timePickers = findComponentsDownward(this, 'TimeSpinner');
-                    if (timePickers.length > 0){
+                    if (timePickers.length > 0) {
                         const columnsPerPicker = timePickers[0].showSeconds ? 3 : 2;
                         const pickerIndex = Math.floor(this.focusedTime.column / columnsPerPicker);
                         const value = this.focusedTime.time[pickerIndex];
@@ -387,7 +390,7 @@
                         return;
                     }
 
-                    if (this.type.match(/range/)){
+                    if (this.type.match(/range/)) {
                         this.$refs.pickerPanel.handleRangePick(this.focusedDate, 'date');
                     } else {
                         const panels = findComponentsDownward(this, 'PanelTable');
@@ -429,7 +432,7 @@
                 const col = column % columnsPerPicker;
 
 
-                if (horizontal){
+                if (horizontal) {
                     const time = this.internalValue.map(extractTime);
 
                     this.focusedTime = {
@@ -443,7 +446,7 @@
                     });
                 }
 
-                if (vertical){
+                if (vertical) {
                     const increment = direction === 'up' ? 1 : -1;
                     const timeParts = ['hours', 'minutes', 'seconds'];
 
@@ -476,8 +479,8 @@
                     return;
                 }
 
-                if (shift){
-                    if (this.type === 'year'){
+                if (shift) {
+                    if (this.type === 'year') {
                         this.focusedDate = new Date(
                             this.focusedDate.getFullYear() + mapPossibleValues(direction, 0, 10),
                             this.focusedDate.getMonth(),
@@ -503,10 +506,10 @@
                 const initialDate = this.focusedDate || (this.internalValue && this.internalValue[0]) || new Date();
                 const focusedDate = new Date(initialDate);
 
-                if (this.type.match(/^date/)){
+                if (this.type.match(/^date/)) {
                     const lastOfMonth = getDayCountOfMonth(initialDate.getFullYear(), initialDate.getMonth());
                     const startDay = initialDate.getDate();
-                    const nextDay = focusedDate.getDate() +  mapPossibleValues(direction, 1, 7);
+                    const nextDay = focusedDate.getDate() + mapPossibleValues(direction, 1, 7);
 
                     if (nextDay < 1) {
                         if (direction.match(/left|right/)) {
@@ -515,7 +518,7 @@
                         } else {
                             focusedDate.setDate(startDay + Math.floor((lastOfMonth - startDay) / 7) * 7);
                         }
-                    } else if (nextDay > lastOfMonth){
+                    } else if (nextDay > lastOfMonth) {
                         if (direction.match(/left|right/)) {
                             focusedDate.setMonth(focusedDate.getMonth() - 1);
                             focusedDate.setDate(nextDay);
@@ -607,7 +610,7 @@
                 } else if (this.multiple && val) {
                     val = multipleParser(val, format);
                 } else if (isRange) {
-                    if (!val){
+                    if (!val) {
                         val = [null, null];
                     } else {
                         if (typeof val === 'string') {
@@ -616,16 +619,16 @@
                             val = parser(val, format).map(v => v || '');
                         } else {
                             const [start, end] = val;
-                            if (start instanceof Date && end instanceof Date){
+                            if (start instanceof Date && end instanceof Date) {
                                 val = val.map(date => new Date(date));
-                            } else if (typeof start === 'string' && typeof end === 'string'){
+                            } else if (typeof start === 'string' && typeof end === 'string') {
                                 val = parser(val.join(RANGE_SEPARATOR), format);
-                            } else if (!start || !end){
+                            } else if (!start || !end) {
                                 val = [null, null];
                             }
                         }
                     }
-                } else if (typeof val === 'string' && type.indexOf('time') !== 0){
+                } else if (typeof val === 'string' && type.indexOf('time') !== 0) {
                     val = parser(val, format) || null;
                 }
 
@@ -646,7 +649,7 @@
                 }
             },
             onPick(dates, visible = false, type) {
-                if (this.multiple){
+                if (this.multiple) {
                     const pickedTimeStamp = dates.getTime();
                     const indexOfPickedDate = this.internalValue.findIndex(date => date && date.getTime() === pickedTimeStamp);
                     const allDates = [...this.internalValue, dates].filter(Boolean);
@@ -678,7 +681,7 @@
         },
         watch: {
             visible (state) {
-                if (state === false){
+                if (state === false) {
                     this.$refs.drop.destroy();
                 }
                 this.$refs.drop.update();
@@ -703,7 +706,7 @@
         mounted () {
             const initialValue = this.value;
             const parsedValue = this.publicVModelValue;
-            if (typeof initialValue !== typeof parsedValue || JSON.stringify(initialValue) !== JSON.stringify(parsedValue)){
+            if (typeof initialValue !== typeof parsedValue || JSON.stringify(initialValue) !== JSON.stringify(parsedValue)) {
                 this.$emit('input', this.publicVModelValue); // to update v-model
             }
             if (this.open !== null) this.visible = this.open;
@@ -713,3 +716,4 @@
         }
     };
 </script>
+
