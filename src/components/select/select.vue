@@ -44,6 +44,7 @@
                     @on-input-focus="isFocused = true"
                     @on-input-blur="isFocused = false"
                     @on-clear="clearSingleSelect"
+                    :selectedText="selectedText"
                 />
             </slot>
         </div>
@@ -56,7 +57,9 @@
                 :data-transfer="transfer"
                 v-transfer-dom
             >
-                <ul v-show="showNotFoundLabel" :class="[prefixCls + '-not-found']"><li>{{ localeNotFoundText }}</li></ul>
+                <ul v-show="showNotFoundLabel" :class="[prefixCls + '-not-found']">
+                    <li>{{ localeNotFoundText }}</li>
+                </ul>
                 <ul :class="prefixCls + '-dropdown-list'">
                     <functional-options
                         v-if="(!remote) || (remote && !loading)"
@@ -74,7 +77,7 @@
     import Drop from './dropdown.vue';
     import {directive as clickOutside} from 'v-click-outside-x';
     import TransferDom from '../../directives/transfer-dom';
-    import { oneOf } from '../../utils/assist';
+    import {oneOf} from '../../utils/assist';
     import Emitter from '../../mixins/emitter';
     import Locale from '../../mixins/locale';
     import SelectHead from './select-head.vue';
@@ -87,7 +90,7 @@
     const findChild = (instance, checkFn) => {
         let match = checkFn(instance);
         if (match) return instance;
-        for (let i = 0, l = instance.$children.length; i < l; i++){
+        for (let i = 0, l = instance.$children.length; i < l; i++) {
             const child = instance.$children[i];
             match = findChild(child, checkFn);
             if (match) return match;
@@ -139,9 +142,9 @@
 
     export default {
         name: 'iSelect',
-        mixins: [ Emitter, Locale ],
-        components: { FunctionalOptions, Drop, SelectHead },
-        directives: { clickOutside, TransferDom },
+        mixins: [Emitter, Locale],
+        components: {FunctionalOptions, Drop, SelectHead},
+        directives: {clickOutside, TransferDom},
         props: {
             value: {
                 type: [String, Number, Array],
@@ -221,13 +224,17 @@
             },
             elementId: {
                 type: String
+            },
+            selectedText: {
+                type: String,
+                default: ''
             }
         },
         mounted(){
             this.$on('on-select-selected', this.onOptionClick);
 
             // set the initial values if there are any
-            if (!this.remote && this.selectOptions.length > 0){
+            if (!this.remote && this.selectOptions.length > 0) {
                 this.values = this.getInitialValue().map(value => {
                     if (typeof value !== 'number' && !value) return null;
                     return this.getOptionData(value);
@@ -320,7 +327,7 @@
                 return selectOptions && selectOptions.length === 0 && (!remote || (remote && !loading));
             },
             publicValue(){
-                if (this.labelInValue){
+                if (this.labelInValue) {
                     return this.multiple ? this.values : this.values[0];
                 } else {
                     return this.multiple ? this.values.map(option => option.value) : (this.values[0] || {}).value;
@@ -360,11 +367,11 @@
 
                     const cOptions = option.componentOptions;
                     if (!cOptions) continue;
-                    if (cOptions.tag.match(optionGroupRegexp)){
+                    if (cOptions.tag.match(optionGroupRegexp)) {
                         let children = cOptions.children;
 
                         // remove filtered children
-                        if (this.filterable){
+                        if (this.filterable) {
                             children = children.filter(
                                 ({componentOptions}) => this.validateOption(componentOptions)
                             );
@@ -466,9 +473,9 @@
                 const value = propsData.value;
                 const label = propsData.label || '';
                 const textContent = (elm && elm.textContent) || (children || []).reduce((str, node) => {
-                    const nodeText = node.elm ? node.elm.textContent : node.text;
-                    return `${str} ${nodeText}`;
-                }, '') || '';
+                        const nodeText = node.elm ? node.elm.textContent : node.text;
+                        return `${str} ${nodeText}`;
+                    }, '') || '';
                 const stringValues = JSON.stringify([value, label, textContent]);
                 const query = this.query.toLowerCase().trim();
                 return stringValues.toLowerCase().includes(query);
@@ -480,7 +487,7 @@
                 }
 
                 this.visible = typeof force !== 'undefined' ? force : !this.visible;
-                if (this.visible){
+                if (this.visible) {
                     this.dropDownWidth = this.$el.getBoundingClientRect().width;
                     this.broadcast('Drop', 'on-update-popper');
                 }
@@ -529,13 +536,13 @@
                 this.values = [];
             },
             handleKeydown (e) {
-                if (e.key === 'Backspace'){
+                if (e.key === 'Backspace') {
                     return; // so we don't call preventDefault
                 }
 
                 if (this.visible) {
                     e.preventDefault();
-                    if (e.key === 'Tab'){
+                    if (e.key === 'Tab') {
                         e.stopPropagation();
                     }
 
@@ -574,9 +581,9 @@
                 if (index > optionsLength) index = 0;
 
                 // find nearest option in case of disabled options in between
-                if (direction > 0){
+                if (direction > 0) {
                     let nearestActiveOption = -1;
-                    for (let i = 0; i < this.flatOptions.length; i++){
+                    for (let i = 0; i < this.flatOptions.length; i++) {
                         const optionIsActive = !this.flatOptions[i].componentOptions.propsData.disabled;
                         if (optionIsActive) nearestActiveOption = i;
                         if (nearestActiveOption >= index) break;
@@ -584,7 +591,7 @@
                     index = nearestActiveOption;
                 } else {
                     let nearestActiveOption = this.flatOptions.length;
-                    for (let i = optionsLength; i >= 0; i--){
+                    for (let i = optionsLength; i >= 0; i--) {
                         const optionIsActive = !this.flatOptions[i].componentOptions.propsData.disabled;
                         if (optionIsActive) nearestActiveOption = i;
                         if (nearestActiveOption <= index) break;
@@ -595,14 +602,14 @@
                 this.focusIndex = index;
             },
             onOptionClick(option) {
-                if (this.multiple){
+                if (this.multiple) {
 
                     // keep the query for remote select
                     if (this.remote) this.lastRemoteQuery = this.lastRemoteQuery || this.query;
                     else this.lastRemoteQuery = '';
 
                     const valueIsSelected = this.values.find(({value}) => value === option.value);
-                    if (valueIsSelected){
+                    if (valueIsSelected) {
                         this.values = this.values.filter(({value}) => value !== option.value);
                     } else {
                         this.values = this.values.concat(option);
@@ -621,7 +628,7 @@
                     return opt.componentOptions.propsData.value === option.value;
                 });
 
-                if (this.filterable){
+                if (this.filterable) {
                     const inputField = this.$el.querySelector('input[type="text"]');
                     if (!this.autoComplete) this.$nextTick(() => inputField.focus());
                 }
@@ -679,11 +686,11 @@
                 const shouldCallRemoteMethod = remoteMethod && hasValidQuery && !this.preventRemoteCall;
                 this.preventRemoteCall = false; // remove the flag
 
-                if (shouldCallRemoteMethod){
+                if (shouldCallRemoteMethod) {
                     this.focusIndex = -1;
                     const promise = this.remoteMethod(query);
                     this.initialLabel = '';
-                    if (promise && promise.then){
+                    if (promise && promise.then) {
                         promise.then(options => {
                             if (options) this.options = options;
                         });
@@ -692,7 +699,7 @@
                 if (query !== '' && this.remote) this.lastRemoteQuery = query;
             },
             loading(state){
-                if (state === false){
+                if (state === false) {
                     this.updateSlotOptions();
                 }
             },
@@ -702,7 +709,7 @@
 
                 // restore query value in filterable single selects
                 const [selectedOption] = this.values;
-                if (selectedOption && this.filterable && !this.multiple && !focused){
+                if (selectedOption && this.filterable && !this.multiple && !focused) {
                     const selectedLabel = String(selectedOption.label || selectedOption.value).trim();
                     if (selectedLabel && this.query !== selectedLabel) {
                         this.preventRemoteCall = true;
@@ -731,7 +738,7 @@
                 this.broadcast('Drop', open ? 'on-update-popper' : 'on-destroy-popper');
             },
             selectOptions(){
-                if (this.hasExpectedValue && this.selectOptions.length > 0){
+                if (this.hasExpectedValue && this.selectOptions.length > 0) {
                     if (this.values.length === 0) {
                         this.values = this.getInitialValue();
                     }
@@ -739,7 +746,7 @@
                     this.hasExpectedValue = false;
                 }
 
-                if (this.slotOptions && this.slotOptions.length === 0){
+                if (this.slotOptions && this.slotOptions.length === 0) {
                     this.query = '';
                 }
             },

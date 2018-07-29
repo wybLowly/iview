@@ -1,9 +1,14 @@
 <template>
     <div @click="onHeaderClick">
-        <div class="ivu-tag ivu-tag-checked" v-for="item in selectedMultiple">
-            <span class="ivu-tag-text">{{ item.label }}</span>
-            <Icon type="ios-close" @click.native.stop="removeTag(item)"></Icon>
-        </div>
+        <template v-if="selectedText === ''">
+            <div class="ivu-tag ivu-tag-checked" v-for="item in selectedMultiple">
+                <span class="ivu-tag-text">{{ item.label }}</span>
+                <Icon type="ios-close" @click.native.stop="removeTag(item)"></Icon>
+            </div>
+        </template>
+        <span class="ivu-select-selected-value" v-else-if="selectedMultiple.length>0">
+                已选择{{selectedMultiple.length}}个{{selectedText}}
+        </span>
         <span
             :class="singleDisplayClasses"
             v-show="singleDisplayValue"
@@ -25,7 +30,8 @@
             @blur="onInputFocus"
 
             ref="input">
-        <Icon type="ios-close-circle" :class="[prefixCls + '-arrow']" v-if="resetSelect" @click.native.stop="onClear"></Icon>
+        <Icon type="ios-close-circle" :class="[prefixCls + '-arrow']" v-if="resetSelect"
+              @click.native.stop="onClear"></Icon>
         <Icon type="ios-arrow-down" :class="[prefixCls + '-arrow']" v-if="!resetSelect && !remote && !disabled"></Icon>
     </div>
 </template>
@@ -38,9 +44,13 @@
 
     export default {
         name: 'iSelectHead',
-        mixins: [ Emitter, Locale ],
-        components: { Icon },
+        mixins: [Emitter, Locale],
+        components: {Icon},
         props: {
+            selectedText: {
+                type: String,
+                default: ''
+            },
             disabled: {
                 type: Boolean,
                 default: false
@@ -104,7 +114,7 @@
                 let status = false;
                 if (!this.multiple) {
                     const value = this.values[0];
-                    if (typeof value === 'undefined' || String(value).trim() === ''){
+                    if (typeof value === 'undefined' || String(value).trim() === '') {
                         status = !this.remoteInitialLabel;
                     }
                 } else {
@@ -162,7 +172,7 @@
                 }
             },
             onHeaderClick(e){
-                if (this.filterable && e.target === this.$el){
+                if (this.filterable && e.target === this.$el) {
                     this.$refs.input.focus();
                 }
             },
@@ -174,7 +184,7 @@
             values ([value]) {
                 if (!this.filterable) return;
                 this.preventRemoteCall = true;
-                if (this.multiple){
+                if (this.multiple) {
                     this.query = '';
                     this.preventRemoteCall = false; // this should be after the query change setter above
                     return;

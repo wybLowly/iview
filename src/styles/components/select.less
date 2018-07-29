@@ -74,18 +74,18 @@
         .@{select-prefix-cls}-placeholder{
             color: @input-placeholder-color;
         }
+    }
 
-        .@{select-prefix-cls}-placeholder, .@{select-prefix-cls}-selected-value{
-            display: block;
-            height: @input-height-base - 2px;
-            line-height: @input-height-base - 2px;
-            font-size: @font-size-small;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            padding-left: 8px;
-            padding-right: 24px;
-        }
+    .@{select-prefix-cls}-placeholder, .@{select-prefix-cls}-selected-value{
+        display: block;
+        height: @input-height-base - 2px;
+        line-height: @input-height-base - 2px;
+        font-size: @font-size-small;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        padding-left: 8px;
+        padding-right: 24px;
     }
 
     &-multiple &-selection{
