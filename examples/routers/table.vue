@@ -2,32 +2,45 @@
     <div>
         <Table ref="currentRowTable" :columns="columns3" :data="data1"></Table>
         <Button @click="handleClearCurrentRow">Clear</Button>
+
+        <div style="display: flex;width: 100%">
+            <div :style="{width:ttWidth+'px'}">
+                <Button @click="ttWidth === 200?ttWidth=500:ttWidth=200">改变宽度</Button>
+            </div>
+            <div style="flex: 1;overflow: hidden">
+                <Table ref="currentRowTable" :columns="columns3" :data="data1" border ></Table>
+            </div>
+        </div>
+
     </div>
 </template>
 <script>
     export default {
-        data () {
+        data() {
             return {
                 columns3: [
                     {
                         type: 'index',
                         width: 60,
                         align: 'center',
-                        indexMethod (row) {
+                        indexMethod(row) {
                             return row._index;
                         }
                     },
                     {
                         title: 'Name',
-                        key: 'name'
+                        key: 'name',
+                        align: 'center',
                     },
                     {
                         title: 'Age',
-                        key: 'age'
+                        key: 'age',
+                        align: 'center',
                     },
                     {
                         title: 'Address',
                         key: 'address',
+                        align: 'center',
                         tooltip: true
                     }
                 ],
@@ -56,11 +69,12 @@
                         address: 'Ottawa No. 2 Lake Park',
                         date: '2016-10-04'
                     }
-                ]
+                ],
+                ttWidth: 200
             }
         },
         methods: {
-            handleClearCurrentRow () {
+            handleClearCurrentRow() {
                 this.$refs.currentRowTable.clearCurrentRow();
             }
         }

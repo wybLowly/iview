@@ -8,7 +8,7 @@
     //position: relative;
     display: inline-block;
     line-height: normal;
-    &-rel{
+    &-rel {
         position: relative;
     }
     .@{select-dropdown-prefix-cls} {
@@ -17,16 +17,16 @@
         overflow: visible;
         max-height: none;
     }
-    &-cells{
+    &-cells {
         width: @date-picker-cells-width;
         margin: 10px;
         white-space: normal;
-        span{
+        span {
             display: inline-block;
             width: 24px;
             height: 24px;
 
-            em{
+            em {
                 display: inline-block;
                 width: 24px;
                 height: 24px;
@@ -38,54 +38,58 @@
                 transition: all @transition-time @ease-in-out;
             }
         }
-        &-header span{
+        &-header span {
             line-height: 24px;
             text-align: center;
             margin: 2px;
             color: @btn-disable-color;
         }
-        &-cell:hover{
-            em{
+        &-cell:hover {
+            em {
                 background: @date-picker-cell-hover-bg;
             }
         }
-        &-focused{
-            em{
+        &-focused {
+            em {
                 box-shadow: 0 0 0 1px @primary-color inset;
             }
+            .ivu-input-icon {
+                transform: rotate(180deg);
+                display: inline-block;
+            }
         }
-        
-        &-cell{
-            span&{
+
+        &-cell {
+            span& {
                 width: 28px;
                 height: 28px;
                 cursor: pointer;
             }
-            &-prev-month,&-next-month{
-                em{
+            &-prev-month, &-next-month {
+                em {
                     color: @btn-disable-color;
                 }
-                &:hover{
-                    em{
+                &:hover {
+                    em {
                         background: transparent;
                     }
                 }
             }
-            span&-week-label,span&-week-label:hover,span&-disabled,span&-disabled:hover{
+            span&-week-label, span&-week-label:hover, span&-disabled, span&-disabled:hover {
                 cursor: @cursor-disabled;
                 color: @btn-disable-color;
-                em{
+                em {
                     color: inherit;
                     background: inherit;
                 }
             }
-            span&-disabled,span&-disabled:hover{
+            span&-disabled, span&-disabled:hover {
                 background: @btn-disable-bg;
             }
-            &-today{
+            &-today {
                 em {
                     position: relative;
-                    &:after{
+                    &:after {
                         content: '';
                         display: block;
                         width: 6px;
@@ -98,13 +102,13 @@
                     }
                 }
             }
-            &-range{
+            &-range {
                 position: relative;
-                em{
+                em {
                     position: relative;
                     z-index: 1;
                 }
-                &:before{
+                &:before {
                     content: '';
                     display: block;
                     background: @date-picker-cell-hover-bg;
@@ -117,23 +121,21 @@
                     right: 0;
                 }
             }
-            &-selected,&-selected:hover
-            {
-                em{
+            &-selected, &-selected:hover {
+                em {
                     background: @primary-color;
                     color: #fff;
                 }
             }
-            span&-disabled&-selected{
+            span&-disabled&-selected {
                 em {
                     background: @btn-disable-color;
                     color: @btn-disable-bg;
                 }
             }
-            &-today&-selected
-            {
-                em{
-                    &:after{
+            &-today&-selected {
+                em {
+                    &:after {
                         background: #fff;
                     }
                 }
@@ -145,15 +147,15 @@
         width: @date-picker-cells-width-with-weeknumbers;
     }
 
-    &-cells-year,&-cells-month{
+    &-cells-year, &-cells-month {
         margin-top: 14px;
-        span{
+        span {
             width: 40px;
             height: 28px;
             line-height: 28px;
             margin: 10px 12px;
             border-radius: @btn-border-radius-small;
-            em{
+            em {
                 width: 40px;
                 height: 28px;
                 line-height: 28px;
@@ -161,57 +163,57 @@
             }
         }
 
-        .@{date-picker-prefix-cls}-cells-cell-focused{
+        .@{date-picker-prefix-cls}-cells-cell-focused {
             background-color: tint(@primary-color, 80%);
         }
 
     }
 
-    &-header{
+    &-header {
         height: 32px;
         line-height: 32px;
         text-align: center;
         border-bottom: 1px solid @border-color-split;
-        &-label{
+        &-label {
             cursor: pointer;
             transition: color @transition-time @ease-in-out;
-            &:hover{
+            &:hover {
                 color: @primary-color;
             }
         }
     }
-    &-btn-pulse{
+    &-btn-pulse {
         background-color: tint(@primary-color, 80%) !important;
         border-radius: @border-radius-small;
         transition: background-color @transition-time @ease-in-out;
     }
-    &-prev-btn{
+    &-prev-btn {
         float: left;
-        &-arrow-double{
+        &-arrow-double {
             margin-left: 10px;
-            i:after{
+            i:after {
                 content: "\F115";
                 margin-left: -8px;
             }
         }
     }
-    &-next-btn{
+    &-next-btn {
         float: right;
-        &-arrow-double{
+        &-arrow-double {
             margin-right: 10px;
-            i:after{
+            i:after {
                 content: "\F11F";
                 margin-left: -8px;
             }
         }
     }
 
-    &-with-range{
-        .@{picker-prefix-cls}-panel{
-            &-body{
+    &-with-range {
+        .@{picker-prefix-cls}-panel {
+            &-body {
                 min-width: (@date-picker-cells-width + 20) * 2;
             }
-            &-content{
+            &-content {
                 float: left;
             }
         }
@@ -221,28 +223,28 @@
 
     }
 
-    &-with-week-numbers{
-        .@{picker-prefix-cls}-panel{
+    &-with-week-numbers {
+        .@{picker-prefix-cls}-panel {
             &-body-date {
                 min-width: (@date-picker-cells-width-with-weeknumbers + 20) * 2;
             }
         }
     }
 
-    &-transfer{
+    &-transfer {
         z-index: @zindex-transfer;
         max-height: none;
         width: auto;
     }
 
-    &-focused input{
+    &-focused input {
         .active();
     }
 }
 
 .@{picker-prefix-cls} {
-    &-panel{
-        &-icon-btn{
+    &-panel {
+        &-icon-btn {
             display: inline-block;
             width: 20px;
             height: 24px;
@@ -252,18 +254,18 @@
             cursor: pointer;
             color: @btn-disable-color;
             transition: color @transition-time @ease-in-out;
-            &:hover{
+            &:hover {
                 color: @primary-color;
             }
-            i{
+            i {
                 font-size: 14px;
             }
         }
 
-        &-body-wrapper&-with-sidebar{
+        &-body-wrapper&-with-sidebar {
             padding-left: 92px;
         }
-        &-sidebar{
+        &-sidebar {
             width: 92px;
             float: left;
             margin-left: -92px;
@@ -275,7 +277,7 @@
             border-radius: @border-radius-small 0 0 @border-radius-small;
             overflow: auto;
         }
-        &-shortcut{
+        &-shortcut {
             padding: @btn-padding-large;
             transition: all @transition-time @ease-in-out;
             cursor: pointer;
@@ -283,36 +285,36 @@
             text-overflow: ellipsis;
             white-space: nowrap;
 
-            &:hover{
+            &:hover {
                 background: @border-color-split;
             }
         }
-        &-body{
+        &-body {
             float: left;
         }
     }
 
-    &-confirm{
+    &-confirm {
         border-top: 1px solid @border-color-split;
         text-align: right;
         padding: 8px;
         clear: both;
-        & > span{
+        & > span {
             color: @link-color;
             cursor: pointer;
             user-select: none;
             float: left;
             padding: 2px 0;
             transition: all @transition-time @ease-in-out;
-            &:hover{
+            &:hover {
                 color: @link-hover-color;
             }
-            &:active{
+            &:active {
                 color: @link-active-color;
             }
         }
 
-        &-time{
+        &-time {
             float: left;
         }
     }

@@ -7,7 +7,12 @@
             </div>
         </template>
         <span class="ivu-select-selected-value" v-else-if="selectedMultiple.length>0">
-                已选择{{selectedMultiple.length}}个{{selectedText}}
+            <template v-if="selectedMultiple.length === 1">
+                {{selectedMultiple[0].label}}
+            </template>
+            <template v-else>
+                         已选择{{selectedMultiple.length}}个{{selectedText}}
+            </template>
         </span>
         <span
             :class="singleDisplayClasses"
@@ -89,7 +94,7 @@
                 default: ''
             }
         },
-        data () {
+        data() {
             return {
                 prefixCls: prefixCls,
                 query: '',
@@ -99,18 +104,18 @@
             };
         },
         computed: {
-            singleDisplayClasses(){
+            singleDisplayClasses() {
                 const {filterable, multiple, showPlaceholder} = this;
                 return [{
                     [prefixCls + '-placeholder']: showPlaceholder && !filterable,
                     [prefixCls + '-selected-value']: !showPlaceholder && !multiple && !filterable,
                 }];
             },
-            singleDisplayValue(){
+            singleDisplayValue() {
                 if ((this.multiple && this.values.length > 0) || this.filterable) return '';
                 return `${this.selectedSingle}` || this.localePlaceholder;
             },
-            showPlaceholder () {
+            showPlaceholder() {
                 let status = false;
                 if (!this.multiple) {
                     const value = this.values[0];
@@ -124,10 +129,10 @@
                 }
                 return status;
             },
-            resetSelect(){
+            resetSelect() {
                 return !this.showPlaceholder && this.clearable;
             },
-            inputStyle () {
+            inputStyle() {
                 let style = {};
 
                 if (this.multiple) {
@@ -140,48 +145,48 @@
 
                 return style;
             },
-            localePlaceholder () {
+            localePlaceholder() {
                 if (this.placeholder === undefined) {
                     return this.t('i.select.placeholder');
                 } else {
                     return this.placeholder;
                 }
             },
-            selectedSingle(){
+            selectedSingle() {
                 const selected = this.values[0];
                 return selected ? selected.label : (this.remoteInitialLabel || '');
             },
-            selectedMultiple(){
+            selectedMultiple() {
                 return this.multiple ? this.values : [];
             }
         },
         methods: {
-            onInputFocus(e){
+            onInputFocus(e) {
                 this.$emit(e.type === 'focus' ? 'on-input-focus' : 'on-input-blur');
             },
-            removeTag (value) {
+            removeTag(value) {
                 if (this.disabled) return false;
                 this.dispatch('iSelect', 'on-select-selected', value);
             },
-            resetInputState () {
+            resetInputState() {
                 this.inputLength = this.$refs.input.value.length * 12 + 20;
             },
-            handleInputDelete () {
+            handleInputDelete() {
                 if (this.multiple && this.selectedMultiple.length && this.query === '') {
                     this.removeTag(this.selectedMultiple[this.selectedMultiple.length - 1]);
                 }
             },
-            onHeaderClick(e){
+            onHeaderClick(e) {
                 if (this.filterable && e.target === this.$el) {
                     this.$refs.input.focus();
                 }
             },
-            onClear(){
+            onClear() {
                 this.$emit('on-clear');
             }
         },
         watch: {
-            values ([value]) {
+            values([value]) {
                 if (!this.filterable) return;
                 this.preventRemoteCall = true;
                 if (this.multiple) {
@@ -194,7 +199,7 @@
                 else this.query = value.label;
                 this.$nextTick(() => this.preventRemoteCall = false); // this should be after the query change setter above
             },
-            query (val) {
+            query(val) {
                 if (this.preventRemoteCall) {
                     this.preventRemoteCall = false;
                     return;
@@ -202,7 +207,7 @@
 
                 this.$emit('on-query-change', val);
             },
-            queryProp(query){
+            queryProp(query) {
                 if (query !== this.query) this.query = query;
             },
         }

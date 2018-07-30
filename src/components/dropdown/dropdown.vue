@@ -1,10 +1,12 @@
 <template>
     <div
-        :class="[prefixCls]"
+        :class="{prefixCls:true,'ivu-select-visible':currentVisible}"
         v-click-outside="onClickoutside"
         @mouseenter="handleMouseenter"
         @mouseleave="handleMouseleave">
-        <div :class="relClasses" ref="reference" @click="handleClick" @contextmenu.prevent="handleRightClick"><slot></slot></div>
+        <div :class="relClasses" ref="reference" @click="handleClick" @contextmenu.prevent="handleRightClick">
+            <slot></slot>
+        </div>
         <transition name="transition-drop">
             <Drop
                 :class="dropdownCls"
@@ -14,7 +16,9 @@
                 @mouseenter.native="handleMouseenter"
                 @mouseleave.native="handleMouseleave"
                 :data-transfer="transfer"
-                v-transfer-dom><slot name="list"></slot></Drop>
+                v-transfer-dom>
+                <slot name="list"></slot>
+            </Drop>
         </transition>
     </div>
 </template>
@@ -22,23 +26,23 @@
     import Drop from '../select/dropdown.vue';
     import {directive as clickOutside} from 'v-click-outside-x';
     import TransferDom from '../../directives/transfer-dom';
-    import { oneOf, findComponentUpward } from '../../utils/assist';
+    import {oneOf, findComponentUpward} from '../../utils/assist';
 
     const prefixCls = 'ivu-dropdown';
 
     export default {
         name: 'Dropdown',
-        directives: { clickOutside, TransferDom },
-        components: { Drop },
+        directives: {clickOutside, TransferDom},
+        components: {Drop},
         props: {
             trigger: {
-                validator (value) {
+                validator(value) {
                     return oneOf(value, ['click', 'hover', 'custom', 'contextMenu']);
                 },
                 default: 'hover'
             },
             placement: {
-                validator (value) {
+                validator(value) {
                     return oneOf(value, ['top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left', 'left-start', 'left-end', 'right', 'right-start', 'right-end']);
                 },
                 default: 'bottom'
@@ -49,21 +53,21 @@
             },
             transfer: {
                 type: Boolean,
-                default () {
+                default() {
                     return this.$IVIEW.transfer === '' ? false : this.$IVIEW.transfer;
                 }
             }
         },
         computed: {
-            transition () {
+            transition() {
                 return ['bottom-start', 'bottom', 'bottom-end'].indexOf(this.placement) > -1 ? 'slide-up' : 'fade';
             },
-            dropdownCls () {
+            dropdownCls() {
                 return {
                     [prefixCls + '-transfer']: this.transfer
                 };
             },
-            relClasses () {
+            relClasses() {
                 return [
                     `${prefixCls}-rel`,
                     {
@@ -72,17 +76,17 @@
                 ];
             }
         },
-        data () {
+        data() {
             return {
                 prefixCls: prefixCls,
                 currentVisible: this.visible
             };
         },
         watch: {
-            visible (val) {
+            visible(val) {
                 this.currentVisible = val;
             },
-            currentVisible (val) {
+            currentVisible(val) {
                 if (val) {
                     this.$refs.drop.update();
                 } else {
@@ -92,21 +96,21 @@
             }
         },
         methods: {
-            handleClick () {
+            handleClick() {
                 if (this.trigger === 'custom') return false;
                 if (this.trigger !== 'click') {
                     return false;
                 }
                 this.currentVisible = !this.currentVisible;
             },
-            handleRightClick () {
+            handleRightClick() {
                 if (this.trigger === 'custom') return false;
                 if (this.trigger !== 'contextMenu') {
                     return false;
                 }
                 this.currentVisible = !this.currentVisible;
             },
-            handleMouseenter () {
+            handleMouseenter() {
                 if (this.trigger === 'custom') return false;
                 if (this.trigger !== 'hover') {
                     return false;
@@ -116,7 +120,7 @@
                     this.currentVisible = true;
                 }, 250);
             },
-            handleMouseleave () {
+            handleMouseleave() {
                 if (this.trigger === 'custom') return false;
                 if (this.trigger !== 'hover') {
                     return false;
@@ -128,26 +132,26 @@
                     }, 150);
                 }
             },
-            onClickoutside (e) {
+            onClickoutside(e) {
                 this.handleClose();
                 this.handleRightClose();
                 if (this.currentVisible) this.$emit('on-clickoutside', e);
             },
-            handleClose () {
+            handleClose() {
                 if (this.trigger === 'custom') return false;
                 if (this.trigger !== 'click') {
                     return false;
                 }
                 this.currentVisible = false;
             },
-            handleRightClose () {
+            handleRightClose() {
                 if (this.trigger === 'custom') return false;
                 if (this.trigger !== 'contextMenu') {
                     return false;
                 }
                 this.currentVisible = false;
             },
-            hasParent () {
+            hasParent() {
 //                const $parent = this.$parent.$parent.$parent;
                 const $parent = findComponentUpward(this, 'Dropdown');
                 if ($parent) {
@@ -157,7 +161,7 @@
                 }
             }
         },
-        mounted () {
+        mounted() {
             this.$on('on-click', (key) => {
                 const $parent = this.hasParent();
                 if ($parent) $parent.$emit('on-click', key);

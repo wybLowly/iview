@@ -6,6 +6,7 @@
             :data="item"
             visible
             :multiple="multiple"
+            :title-width="titleWidth"
             :show-checkbox="showCheckbox"
             :children-key="childrenKey">
         </Tree-node>
@@ -21,12 +22,12 @@
 
     export default {
         name: 'Tree',
-        mixins: [ Emitter, Locale ],
-        components: { TreeNode },
+        mixins: [Emitter, Locale],
+        components: {TreeNode},
         props: {
             data: {
                 type: Array,
-                default () {
+                default() {
                     return [];
                 }
             },
@@ -50,9 +51,12 @@
             },
             render: {
                 type: Function
+            },
+            titleWidth: {
+                type: String | Number
             }
         },
-        data () {
+        data() {
             return {
                 prefixCls: prefixCls,
                 stateTree: this.data,
@@ -62,7 +66,7 @@
         watch: {
             data: {
                 deep: true,
-                handler () {
+                handler() {
                     this.stateTree = this.data;
                     this.flatState = this.compileFlatState();
                     this.rebuildTree();
@@ -70,7 +74,7 @@
             }
         },
         computed: {
-            localeEmptyText () {
+            localeEmptyText() {
                 if (typeof this.emptyText === 'undefined') {
                     return this.t('i.tree.emptyText');
                 } else {
@@ -79,13 +83,14 @@
             },
         },
         methods: {
-            compileFlatState () { // so we have always a relation parent/children of each node
+            compileFlatState() { // so we have always a relation parent/children of each node
                 let keyCounter = 0;
                 let childrenKey = this.childrenKey;
                 const flatTree = [];
+
                 function flattenChildren(node, parent) {
                     node.nodeKey = keyCounter++;
-                    flatTree[node.nodeKey] = { node: node, nodeKey: node.nodeKey };
+                    flatTree[node.nodeKey] = {node: node, nodeKey: node.nodeKey};
                     if (typeof parent != 'undefined') {
                         flatTree[node.nodeKey].parent = parent.nodeKey;
                         flatTree[parent.nodeKey][childrenKey].push(node.nodeKey);
@@ -96,12 +101,13 @@
                         node[childrenKey].forEach(child => flattenChildren(child, node));
                     }
                 }
+
                 this.stateTree.forEach(rootNode => {
                     flattenChildren(rootNode);
                 });
                 return flatTree;
             },
-            updateTreeUp(nodeKey){
+            updateTreeUp(nodeKey) {
                 const parentKey = this.flatState[nodeKey].parent;
                 if (typeof parentKey == 'undefined') return;
 
@@ -118,7 +124,7 @@
                 }
                 this.updateTreeUp(parentKey);
             },
-            rebuildTree () { // only called when `data` prop changes
+            rebuildTree() { // only called when `data` prop changes
                 const checkedNodes = this.getCheckedNodes();
                 checkedNodes.forEach(node => {
                     this.updateTreeDown(node, {checked: true});
@@ -133,11 +139,11 @@
                 });
             },
 
-            getSelectedNodes () {
+            getSelectedNodes() {
                 /* public API */
                 return this.flatState.filter(obj => obj.node.selected).map(obj => obj.node);
             },
-            getCheckedNodes () {
+            getCheckedNodes() {
                 /* public API */
                 return this.flatState.filter(obj => obj.node.checked).map(obj => obj.node);
             },
@@ -151,9 +157,9 @@
                     });
                 }
             },
-            handleSelect (nodeKey) {
+            handleSelect(nodeKey) {
                 const node = this.flatState[nodeKey].node;
-                if (!this.multiple){ // reset previously selected node
+                if (!this.multiple) { // reset previously selected node
                     const currentSelectedKey = this.flatState.findIndex(obj => obj.node.selected);
                     if (currentSelectedKey >= 0 && currentSelectedKey !== nodeKey) this.$set(this.flatState[currentSelectedKey].node, 'selected', false);
                 }
@@ -161,7 +167,7 @@
 
                 this.$emit('on-select-change', this.getSelectedNodes());
             },
-            handleCheck({ checked, nodeKey }) {
+            handleCheck({checked, nodeKey}) {
                 const node = this.flatState[nodeKey].node;
                 this.$set(node, 'checked', checked);
                 this.$set(node, 'indeterminate', false);
@@ -172,11 +178,11 @@
                 this.$emit('on-check-change', this.getCheckedNodes());
             }
         },
-        created(){
+        created() {
             this.flatState = this.compileFlatState();
             this.rebuildTree();
         },
-        mounted () {
+        mounted() {
             this.$on('on-check', this.handleCheck);
             this.$on('on-selected', this.handleSelect);
             this.$on('toggle-expand', node => this.$emit('on-toggle-expand', node));

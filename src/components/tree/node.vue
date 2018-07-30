@@ -14,12 +14,14 @@
                     @click.native.prevent="handleCheck"></Checkbox>
                 <Render v-if="data.render" :render="data.render" :data="data" :node="node"></Render>
                 <Render v-else-if="isParentRender" :render="parentRender" :data="data" :node="node"></Render>
-                <span v-else :class="titleClasses" @click="handleSelect">{{ data.title }}</span>
+                <span v-else :class="titleClasses" @click="handleSelect"
+                      :style="{width:titleWidth}">{{ data.title }}</span>
                 <Tree-node
                     v-if="data.expand"
                     v-for="(item, i) in children"
                     :key="i"
                     :data="item"
+                    :title-width="titleWidth"
                     :multiple="multiple"
                     :show-checkbox="showCheckbox"
                     :children-key="childrenKey">
@@ -45,7 +47,7 @@
         props: {
             data: {
                 type: Object,
-                default () {
+                default() {
                     return {};
                 }
             },
@@ -60,27 +62,30 @@
             showCheckbox: {
                 type: Boolean,
                 default: false
+            },
+            titleWidth: {
+                type: String | Number
             }
         },
-        data () {
+        data() {
             return {
                 prefixCls: prefixCls
             };
         },
         computed: {
-            classes () {
+            classes() {
                 return [
                     `${prefixCls}-children`
                 ];
             },
-            selectedCls () {
+            selectedCls() {
                 return [
                     {
                         [`${prefixCls}-node-selected`]: this.data.selected
                     }
                 ];
             },
-            arrowClasses () {
+            arrowClasses() {
                 return [
                     `${prefixCls}-arrow`,
                     {
@@ -89,7 +94,7 @@
                     }
                 ];
             },
-            titleClasses () {
+            titleClasses() {
                 return [
                     `${prefixCls}-title`,
                     {
@@ -97,17 +102,17 @@
                     }
                 ];
             },
-            showArrow () {
+            showArrow() {
                 return (this.data[this.childrenKey] && this.data[this.childrenKey].length) || ('loading' in this.data && !this.data.loading);
             },
-            showLoading () {
+            showLoading() {
                 return 'loading' in this.data && this.data.loading;
             },
-            isParentRender () {
+            isParentRender() {
                 const Tree = findComponentUpward(this, 'Tree');
                 return Tree && Tree.render;
             },
-            parentRender () {
+            parentRender() {
                 const Tree = findComponentUpward(this, 'Tree');
                 if (Tree && Tree.render) {
                     return Tree.render;
@@ -115,7 +120,7 @@
                     return null;
                 }
             },
-            node () {
+            node() {
                 const Tree = findComponentUpward(this, 'Tree');
                 if (Tree) {
                     // 将所有的 node（即flatState）和当前 node 都传递
@@ -124,12 +129,12 @@
                     return [];
                 }
             },
-            children () {
+            children() {
                 return this.data[this.childrenKey];
             }
         },
         methods: {
-            handleExpand () {
+            handleExpand() {
                 const item = this.data;
                 if (item.disabled) return;
 
@@ -154,7 +159,7 @@
                     this.dispatch('Tree', 'toggle-expand', this.data);
                 }
             },
-            handleSelect () {
+            handleSelect() {
                 if (this.data.disabled) return;
                 if (this.showCheckbox) {
                     this.handleCheck();
@@ -162,7 +167,7 @@
                 }
                 this.dispatch('Tree', 'on-selected', this.data.nodeKey);
             },
-            handleCheck () {
+            handleCheck() {
                 if (this.data.disabled) return;
                 const changes = {
                     checked: !this.data.checked && !this.data.indeterminate,
