@@ -7,8 +7,8 @@
             <div :style="{width:ttWidth+'px'}">
                 <Button @click="ttWidth === 200?ttWidth=500:ttWidth=200">改变宽度</Button>
             </div>
-            <div style="flex: 1;overflow: hidden">
-                <Table ref="currentRowTable" :columns="columns3" :data="data1" border ></Table>
+            <div style="flex: 1;overflow: hidden;">
+                <Table ref="currentRowTable" :columns="columns3" :data="data1" border></Table>
             </div>
         </div>
 
@@ -36,6 +36,18 @@
                         title: 'Age',
                         key: 'age',
                         align: 'center',
+                        render(h, params) {
+                            return h('div', {
+                                style: {
+                                    width: '500px',
+                                    display: 'flex',
+                                    'justify-content': 'space-between'
+                                }
+                            }, [
+                                h('div', 'div1'),
+                                h('div', 'div2')
+                            ]);
+                        }
                     },
                     {
                         title: 'Address',
@@ -80,3 +92,11 @@
         }
     }
 </script>
+
+<style lang="less">
+    .ivu-table table {
+        width: 100% !important;
+        font-size: 14px;
+        color: #787878;
+    }
+</style>

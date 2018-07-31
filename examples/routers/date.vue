@@ -249,12 +249,12 @@
     <div style="width: 500px;margin: 100px;">
         <p><input type="text"></p>
 
-        <DatePicker type="month" show-week-numbers placeholder="Select date" style="width: 200px"></DatePicker>
+        <DatePicker type="month" placeholder="Select date" style="width: 200px"></DatePicker>
         <DatePicker type="year" show-week-numbers placeholder="Select date" style="width: 200px">
 
         </DatePicker>
 
-        <DatePicker type="date" transfer show-week-numbers placeholder="slot footer" style="width: 400px">
+        <DatePicker type="date" transfer placeholder="slot footer" style="width: 400px">
             <div slot="footer">
                 哇哈啊二维火
             </div>
@@ -262,7 +262,7 @@
         <DatePicker type="datetime" show-week-numbers confirm placeholder="Select date" style="width: 400px">
         </DatePicker>
 
-        <DatePicker type="daterange" transfer show-week-numbers placeholder="Select date"
+        <DatePicker type="daterange" transfer placeholder="Select date"
                     style="width: 400px"></DatePicker>
         <DatePicker type="datetimerange" transfer show-week-numbers placeholder="Select date"
                     style="width: 400px"></DatePicker>
