@@ -136,7 +136,7 @@
             },
             editable: {
                 type: Boolean,
-                default: true
+                default: false
             },
             clearable: {
                 type: Boolean,
@@ -265,11 +265,11 @@
                 return this.open === null ? this.visible : this.open;
             },
             iconType() {
-                // let icon = 'ios-calendar-outline';
+                let icon = 'ios-arrow-down';
                 // if (this.type === 'time' || this.type === 'timerange') icon = 'ios-time-outline';
-                // if (this.showClose) icon = 'ios-close-circle';
-                // return icon;
-                return 'ios-arrow-down';
+                if (this.showClose) icon = 'ios-close-circle';
+                return icon;
+                // return 'ios-arrow-down';
             },
             transition() {
                 const bottomPlaced = this.placement.match(/^bottom/);

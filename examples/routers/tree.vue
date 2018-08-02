@@ -210,10 +210,15 @@
             <Icon type="arrow-down-b" class="ivu-select-arrow ivu-icon-ios-arrow-down "></Icon>
             <DropdownMenu slot="list">
                 <div style="max-height: 250px;overflow-y: auto;overflow-x: hidden">
-                    <Tree  :data="data1" :show-checkbox="showCheckbox" multiple style="text-align: left"></Tree>
+                    <Tree :data="data1" :show-checkbox="showCheckbox" multiple style="text-align: left"></Tree>
                 </div>
             </DropdownMenu>
         </Dropdown>
+
+
+        <Button style="margin-top: 50px;" @click="onClick">点击</Button>
+        <Button style="margin-top: 50px;" @click="unSelected">取消</Button>
+
     </div>
 </template>
 <script>
@@ -252,6 +257,16 @@
                         ]
                     }
                 ]
+            }
+        },
+        methods: {
+            onClick() {
+                this.$set(this.data1[0].children[0].children[0], 'checked', true);
+                this.$set(this.data1[0].children[0].children[0], 'selected', true);
+            },
+            unSelected() {
+                this.$set(this.data1[0].children[0].children[0], 'checked', false);
+                this.$set(this.data1[0].children[0].children[0], 'selected', false);
             }
         }
     }

@@ -161,19 +161,31 @@
             },
             handleSelect() {
                 if (this.data.disabled) return;
-                if (this.showCheckbox) {
-                    this.handleCheck();
+                if (this.showCheckbox && this.multiple) {
+                    this.bindSelectedChecked();
                     return;
                 }
                 this.dispatch('Tree', 'on-selected', this.data.nodeKey);
             },
             handleCheck() {
                 if (this.data.disabled) return;
+                if (this.showCheckbox && this.multiple) {
+                    this.bindSelectedChecked();
+                    return;
+                }
                 const changes = {
                     checked: !this.data.checked && !this.data.indeterminate,
                     nodeKey: this.data.nodeKey
                 };
                 this.dispatch('Tree', 'on-check', changes);
+            },
+            bindSelectedChecked() {
+                const changes = {
+                    checked: !this.data.checked && !this.data.indeterminate,
+                    nodeKey: this.data.nodeKey
+                };
+                this.dispatch('Tree', 'on-check', changes);
+                this.dispatch('Tree', 'on-selected', this.data.nodeKey);
             }
         }
     };
