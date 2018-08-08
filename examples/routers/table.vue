@@ -8,7 +8,8 @@
                 <Button @click="ttWidth === 200?ttWidth=500:ttWidth=200">改变宽度</Button>
             </div>
             <div style="flex: 1;overflow: hidden;">
-                <Table ref="currentRowTable" :columns="columns3" :data="data1" border></Table>
+                <Table ref="currentRowTable" :columns="columns3" :data="data1"
+                       :table-body-style="{height:'100px',overflow:'auto'}"></Table>
             </div>
         </div>
 
@@ -99,4 +100,5 @@
         font-size: 14px;
         color: #787878;
     }
+
 </style>
