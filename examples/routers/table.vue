@@ -2,14 +2,13 @@
     <div>
         <Table ref="currentRowTable" :columns="columns3" :data="data1"></Table>
         <Button @click="handleClearCurrentRow">Clear</Button>
-
+        <Button @click="handlerSelect"></Button>
         <div style="display: flex;width: 100%">
             <div :style="{width:ttWidth+'px'}">
-                <Button @click="ttWidth === 200?ttWidth=500:ttWidth=200">改变宽度</Button>
+                <Button @click="height += 200">改变宽度</Button>
             </div>
             <div style="flex: 1;overflow: hidden;">
-                <Table ref="currentRowTable" :columns="columns3" :data="data1"
-                       :table-body-style="{height:'100px',overflow:'auto'}"></Table>
+                <Table :columns="columns3" :data="data1" :table-body-max-height="height"></Table>
             </div>
         </div>
 
@@ -19,7 +18,13 @@
     export default {
         data() {
             return {
+                height: 500,
                 columns3: [
+                    {
+                        type: 'selection',
+                        width: 60,
+                        align: 'center',
+                    },
                     {
                         type: 'index',
                         width: 60,
@@ -89,6 +94,9 @@
         methods: {
             handleClearCurrentRow() {
                 this.$refs.currentRowTable.clearCurrentRow();
+            },
+            handlerSelect() {
+                this.$refs.currentRowTable.toggleSelect(1);
             }
         }
     }

@@ -14,7 +14,9 @@
                     :columns-width="columnsWidth"
                     :data="rebuildData"></table-head>
             </div>
-            <div :class="[prefixCls + '-body']" :style="Object.assign({},bodyStyle,tableBodyStyle)" ref="body"
+            <div :class="[prefixCls + '-body']"
+                 :style="Object.assign({},bodyStyle,{overflow:'auto','max-height':tableBodyMaxHeight + 'px'})"
+                 ref="body"
                  @scroll="handleBodyScroll"
                  v-show="!((!!localeNoDataText && (!data || data.length === 0)) || (!!localeNoFilteredDataText && (!rebuildData || rebuildData.length === 0)))">
                 <table-body
@@ -53,7 +55,8 @@
                         :columns-width="columnsWidth"
                         :data="rebuildData"></table-head>
                 </div>
-                <div :class="[prefixCls + '-fixed-body']" :style="Object.assign({},fixedBodyStyle,tableBodyStyle)"
+                <div :class="[prefixCls + '-fixed-body']"
+                     :style="Object.assign({},fixedBodyStyle,{overflow:'auto','max-height':tableBodyMaxHeight + 'px'})"
                      ref="fixedBody"
                      @mousewheel="handleFixedMousewheel" @DOMMouseScroll="handleFixedMousewheel">
                     <table-body
@@ -79,7 +82,8 @@
                         :columns-width="columnsWidth"
                         :data="rebuildData"></table-head>
                 </div>
-                <div :class="[prefixCls + '-fixed-body']" :style="Object.assign({},fixedBodyStyle,tableBodyStyle)"
+                <div :class="[prefixCls + '-fixed-body']"
+                     :style="Object.assign({},fixedBodyStyle,{overflow:'auto','max-height':tableBodyMaxHeight + 'px'})"
                      ref="fixedRightBody"
                      @mousewheel="handleFixedMousewheel" @DOMMouseScroll="handleFixedMousewheel">
                     <table-body
@@ -188,11 +192,8 @@
                 type: Boolean,
                 default: false
             },
-            tableBodyStyle: {
-                type: Object,
-                default() {
-                    return {};
-                }
+            tableBodyMaxHeight: {
+                type: [Number, String]
             }
         },
         data() {
