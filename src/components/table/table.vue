@@ -194,6 +194,10 @@
             },
             tableBodyMaxHeight: {
                 type: [Number, String]
+            },
+            rowClickBandCheckbox: {
+                type: Boolean,
+                default: true
             }
         },
         data() {
@@ -502,7 +506,7 @@
                 this.handleCurrentRow('clear');
             },
             clickCurrentRow(_index) {
-                this.toggleSelect(_index);   //点击row 选中checkbox
+                if (this.rowClickBandCheckbox) this.toggleSelect(_index);   //点击row 选中checkbox
                 this.highlightCurrentRow(_index);
                 this.$emit('on-row-click', JSON.parse(JSON.stringify(this.cloneData[_index])), _index);
             },
@@ -518,6 +522,17 @@
                 return JSON.parse(JSON.stringify(this.data.filter((data, index) => selectionIndexes.indexOf(index) > -1)));
             },
             toggleSelect(_index) {
+
+                let isSelection = false;
+                for (let i = 0; i < this.columns.length; i++) {
+                    if (this.columns[i].type === 'selection') {
+                        isSelection = true;
+                        break;
+                    }
+                }
+
+                if (!isSelection) return;
+
                 let data = {};
 
                 for (let i in this.objData) {
