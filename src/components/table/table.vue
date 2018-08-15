@@ -502,6 +502,7 @@
                 this.handleCurrentRow('clear');
             },
             clickCurrentRow(_index) {
+                this.toggleSelect(_index);   //点击row 选中checkbox
                 this.highlightCurrentRow(_index);
                 this.$emit('on-row-click', JSON.parse(JSON.stringify(this.cloneData[_index])), _index);
             },
