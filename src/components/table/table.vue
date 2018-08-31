@@ -15,7 +15,7 @@
                     :data="rebuildData"></table-head>
             </div>
             <div :class="[prefixCls + '-body']"
-                 :style="Object.assign({},bodyStyle,{overflow:'auto','max-height':tableBodyMaxHeight + 'px'})"
+                 :style="Object.assign({},bodyStyle,{'overflow':'auto','max-height':tableBodyMaxHeight + 'px'})"
                  ref="body"
                  @scroll="handleBodyScroll"
                  v-show="!((!!localeNoDataText && (!data || data.length === 0)) || (!!localeNoFilteredDataText && (!rebuildData || rebuildData.length === 0)))">
@@ -56,7 +56,7 @@
                         :data="rebuildData"></table-head>
                 </div>
                 <div :class="[prefixCls + '-fixed-body']"
-                     :style="Object.assign({},fixedBodyStyle,{overflow:'auto','max-height':tableBodyMaxHeight + 'px'})"
+                     :style="Object.assign({},fixedBodyStyle,{'overflow':'auto','max-height':tableBodyMaxHeight + 'px'})"
                      ref="fixedBody"
                      @mousewheel="handleFixedMousewheel" @DOMMouseScroll="handleFixedMousewheel">
                     <table-body
@@ -83,7 +83,7 @@
                         :data="rebuildData"></table-head>
                 </div>
                 <div :class="[prefixCls + '-fixed-body']"
-                     :style="Object.assign({},fixedBodyStyle,{overflow:'auto','max-height':tableBodyMaxHeight + 'px'})"
+                     :style="Object.assign({},fixedBodyStyle,{'overflow':'auto','max-height':tableBodyMaxHeight + 'px'})"
                      ref="fixedRightBody"
                      @mousewheel="handleFixedMousewheel" @DOMMouseScroll="handleFixedMousewheel">
                     <table-body
@@ -523,7 +523,9 @@
             },
             toggleSelect(_index) {
 
-                let isSelection = false;
+                if (this.objData[_index]._isDisabled) return; //如果row被禁用掉
+
+                let isSelection = false;   //判断是否有checkbox
                 for (let i = 0; i < this.columns.length; i++) {
                     if (this.columns[i].type === 'selection') {
                         isSelection = true;
