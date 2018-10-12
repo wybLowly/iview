@@ -8,7 +8,7 @@
                 <Button @click="height += 200">改变宽度</Button>
             </div>
             <div style="flex: 1;overflow: hidden;">
-                <Table :columns="columns3" :data="data1" :table-body-max-height="height"></Table>
+                <Table :columns="columns3" :data="[]" :table-body-max-height="height" no-data-text="没有东西哦"></Table>
             </div>
         </div>
 

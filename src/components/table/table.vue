@@ -35,7 +35,7 @@
                     <tbody>
                     <tr>
                         <td :style="{'height':bodyStyle.height,'width':`${this.headerWidth}px`}">
-                            <span v-html="localeNoDataText" v-if="!data || data.length === 0"></span>
+                            <span v-html="localeNoDataText" v-if="!data || data.length === 0"  class="no-data-text"></span>
                             <span v-html="localeNoFilteredDataText" v-else></span>
                         </td>
                     </tr>
